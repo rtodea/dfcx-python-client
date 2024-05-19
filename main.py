@@ -1,8 +1,8 @@
-import google.cloud.dialogflowcx_v3 as dialogflow
 import uuid
 
 
 def detect_intent_text(project_id, location_id, agent_id, session_id, text):
+    import google.cloud.dialogflowcx_v3 as dialogflow
     """Detects intent from text input and returns the response."""
     session_client = dialogflow.SessionsClient()
     session_path = session_client.session_path(
@@ -32,14 +32,17 @@ def gen_session_id():
 
 def run_agent_with_func_tools():
     # Example usage
-    project_id = "your-project-id"
+    project_id = "api-project-604594715070"
     location_id = "global"
-    agent_id = "your-agent-id"
+    agent_id = "565978b6-f65a-4031-980a-441032ca038e"
 
     session_id = gen_session_id()
 
     messages = [
-        "Hello, I'd like to book a flight"
+        "Hi! I want to buy a laptop.",
+        "I want to ask for the temperature of a city like New York.",
+        "New York",
+        "Can tell me the New York city Temperature?"
     ]
 
     for text in messages:
@@ -47,5 +50,7 @@ def run_agent_with_func_tools():
 
 
 if __name__ == '__main__':
+    import os
+    print(os.getenv("LD_LIBRARY_PATH"))
     run_agent_with_func_tools()
 
