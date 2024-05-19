@@ -1,8 +1,8 @@
+import google.cloud.dialogflowcx_v3 as dialogflow
 import uuid
 
 
 def detect_intent_text(project_id, location_id, agent_id, session_id, text):
-    import google.cloud.dialogflowcx_v3 as dialogflow
     """Detects intent from text input and returns the response."""
     session_client = dialogflow.SessionsClient()
     session_path = session_client.session_path(
@@ -10,7 +10,7 @@ def detect_intent_text(project_id, location_id, agent_id, session_id, text):
     )
 
     text_input = dialogflow.TextInput(text=text)
-    query_input = dialogflow.QueryInput(text=text_input)
+    query_input = dialogflow.QueryInput(text=text_input, language_code="en")
 
     request = dialogflow.DetectIntentRequest(
         session=session_path,
@@ -19,11 +19,8 @@ def detect_intent_text(project_id, location_id, agent_id, session_id, text):
 
     response = session_client.detect_intent(request=request)
 
-    print(f"Query text: {response.query_result.text}")
-    print(f"Detected intent: {response.query_result.intent.display_name}")
-    for param in response.query_result.parameters:
-        print(f"{param.display_name}: {param.value}")
-    print(f"Response: {response.query_result.response_messages[0].text.text[0]}")
+    print(f"user says: {response.query_result.text}")
+    print(f"agent says: {response.query_result.response_messages[0].text.text[0]}")
 
 
 def gen_session_id():
@@ -50,7 +47,5 @@ def run_agent_with_func_tools():
 
 
 if __name__ == '__main__':
-    import os
-    print(os.getenv("LD_LIBRARY_PATH"))
     run_agent_with_func_tools()
 
